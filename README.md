@@ -1,84 +1,39 @@
-Description
-===========
+# Cookbook for Atlassian JIRA
 
-Installs and configures Jira and starts it as a service under runit.
+# Requirements
 
-Requirements
-============
+* CentOS 6/RHEL6
 
-## Platform:
+# Usage
 
-* Ubuntu 10.04
-* Debian 6.0
+# Attributes
 
-Requires a MySQL database server, but currently out of scope to run
-this on the same system, or even automatically set it up (see
-__Roadmap__ and __Usage__).
+# Recipes
 
-## Cookbooks:
+## default
 
-* runit
-* java
-* apache2
+Does nothing.
 
-Attributes
-==========
+## server
 
-See `attributes/default.rb` for defaults.
+Unpack Atlassian JIRA from the tarball and perform basic configuration allowing you to set it up.
 
-* `node['jira']['virtual_host_name']` - hostname to use in the virtualhost
-* `node['jira']['virtual_host_alias']` - server alias(es) to use in
-  the virtual host.
-* `node['jira']['version']` - version of jira to install
-* `node['jira']['install_path']` - location where jira should be installed
-* `node['jira']['run_user']` - user to run the jira service as
-* `node['jira']['database']` - the name of the database to connect to
-* `node['jira']['database_host']` - hostname of the database server
-* `node['jira']['database_user']` - user to connect to the database
-* `node['jira']['database_password']` - password to use for the
-  database connection.
+## local_database
 
-Recipes
-=======
+Sets up a local PostgreSQL database for JIRA to talk to.
 
-default
--------
+# Limitations
 
-The default recipe sets up runit, java and apache2 first, then
-downloads jira-standalone from atlassian of the specified version. It
-also downloads and installs the mysql connector.
+* It's obviously impossible to Chef out the entire JIRA install because much of it is interactive. This cookbook deals with getting JIRA onto the system and the database set up, not configuring the actual app itself.
+* Various XML files in JIRA need to be edited to make things like SSL termination at a front-end apache work. These can't be managed by Chef: in particular, modifying the "proxyHost", "proxyPort" and "proxyserver" attributes of server.xml
+* Single-sign-on configuration with Crowd is not managed by this cookbook either since it also involves editing XML files.
 
-After writing the configuration and startup.sh script, jira will start
-under runit, and an apache vhost will be set up for it.
+# Roadmap
 
-Usage
-=====
+* Support other databases other than PostgreSQL.
+* Support databases on machines other than "localhost".
+* Find a way to manage needed directives in JIRA's XML configs.
 
-Until COOK-464 is released, the following manual steps are required to
-set up the database.
+# Author
 
-Mysql queries:
-
-    create database jiradb character set utf8;
-    grant all privileges on jiradb.*
-        to '$jira_user'@'localhost' identified by '$jira_password';
-    flush privileges;
-
-License and Author
-==================
-
-Author:: Adam Jacob <adam@opscode.com>
-
-Copyright:: 2008-2011, Opscode, Inc
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Author:: Julian Dunn <jdunn@secondmarket.com>
