@@ -50,7 +50,7 @@ postgresql_database_user 'jira' do
   action :grant
 end
 
-template "#{node['jira']['datadir']}/dbconfig.xml" do
+template "#{node['jira']['homedir']}/dbconfig.xml" do
   source "dbconfig.xml.erb"
   owner "root"
   group "root"

@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-template "#{node['jira']['homedir']}/atlassian-jira/WEB-INF/classes/crowd.properties" do
+template "#{node['jira']['installdir']}/atlassian-jira/WEB-INF/classes/crowd.properties" do
   source "crowd.properties.erb"
   owner  "root"
   group  "root"

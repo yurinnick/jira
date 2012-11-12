@@ -43,7 +43,7 @@ end
 
 user "jira" do
   comment "Atlassian JIRA"
-  home node['jira']['datadir']
+  home node['jira']['homedir']
   system true
   action :create
 end
@@ -54,12 +54,12 @@ template "/etc/profile.d/jira.sh" do
   group "root"
   mode  00755
   variables(
-    :jira_home => node['jira']['datadir']
+    :jira_home => node['jira']['homedir']
   )
   action :create
 end
 
-directory node['jira']['datadir'] do
+directory node['jira']['homedir'] do
   owner "jira"
   mode 00755
   action :create
@@ -67,20 +67,20 @@ end
 
 # Per https://confluence.atlassian.com/display/JIRA051/Installing+JIRA+from+an+Archive+File+on+Windows%2C+Linux+or+Solaris only these dirs need to be owned by "jira"
 %w{logs temp work}.each do |d|
-  directory "#{node['jira']['homedir']}/#{d}" do
+  directory "#{node['jira']['installdir']}/#{d}" do
     owner "jira"
     mode 00755
     action :create
   end
 end
 
-template "#{node['jira']['homedir']}/atlassian-jira/WEB-INF/classes/jira-application.properties" do
+template "#{node['jira']['installdir']}/atlassian-jira/WEB-INF/classes/jira-application.properties" do
   source "jira-application.properties.erb"
   owner "root"
   group "root"
   mode  00644
   variables(
-    :jira_workdir => node['jira']['datadir']
+    :jira_workdir => node['jira']['homedir']
   )
   action :create
   notifies :restart, "service[jira]"
@@ -92,7 +92,7 @@ template "/etc/init.d/jira" do
   group "root"
   mode  00755
   variables(
-    :jira_base => node['jira']['homedir']
+    :jira_base => node['jira']['installdir']
   )
   action :create
 end

@@ -62,7 +62,8 @@ Vagrant::Config.run do |config|
     }
 
     chef.run_list = [
-      "recipe[jira::server]"
+      "recipe[jira::server]",
+      "recipe[jira::local_database]"
     ]
   end
 end
