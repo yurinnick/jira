@@ -63,6 +63,7 @@ Roadmap
 
 * Support other databases other than PostgreSQL.
 * Support databases on machines other than "localhost".
+* Support platforms other than RHEL.
 * Find a way to manage needed directives in JIRA's XML configs.
 
 License and Author
