@@ -6,7 +6,7 @@ description      "Installs/Configures jira"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.1.0"
 
-%w{database java mysql postgresql}.each do |d|
+%w{database java mysql openssl postgresql}.each do |d|
   depends d
 end
 
