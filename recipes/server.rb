@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "java::oracle"
+include_recipe "java::default"
 
 execute "untar-jira-tarball" do
   cwd node['jira']['parentdir']
